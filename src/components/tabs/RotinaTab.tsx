@@ -49,7 +49,12 @@ export const RotinaTab = ({ routineChecks, toggleRoutineCheck }: RotinaTabProps)
 
         {progress === 100 && (
           <p className="text-success text-center mt-3 font-semibold animate-scale-in">
-            🎉 Parabéns! Você completou tudo hoje!
+            ✨ Dia completo! Você cuidou de você hoje.
+          </p>
+        )}
+        {progress > 0 && progress < 100 && (
+          <p className="text-muted-foreground text-center mt-2 text-sm">
+            {completedCount} de {totalCount} — cada item conta, mas nenhum é obrigatório.
           </p>
         )}
       </div>
@@ -89,11 +94,11 @@ export const RotinaTab = ({ routineChecks, toggleRoutineCheck }: RotinaTabProps)
         })}
       </div>
 
-      {/* Tips */}
+      {/* Tips - control-focused */}
       <div className="card-elevated p-5 bg-primary-soft border border-primary/20">
         <p className="text-sm text-foreground leading-relaxed">
-          💡 <strong>Dica:</strong> Não se cobre pela perfeição. Mesmo que complete apenas 
-          1 ou 2 itens, você já está melhor do que ontem. O segredo é nunca zerar.
+          💡 <strong>Lembre-se:</strong> Essa lista é sua aliada, não sua chefe. 
+          Complete o que puder, quando puder. O objetivo é criar consciência, não pressão.
         </p>
       </div>
     </div>
