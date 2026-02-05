@@ -8,12 +8,26 @@ interface ProgressoTabProps {
 }
 
 const encouragingMessages = [
-  "Cada dia conta. Continue assim!",
-  "Você está construindo uma nova versão de si mesmo.",
-  "Lembre-se: progresso, não perfeição.",
-  "O importante é não desistir.",
-  "Você já deu o primeiro passo. Continue!",
+  "Você está no controle. Continue no seu ritmo.",
+  "Cada registro é uma prova de compromisso consigo mesmo.",
+  "Progresso não é velocidade. É direção.",
+  "Você escolheu cuidar de você. Isso já é muito.",
+  "Os números contam uma história. A sua história.",
+  "Dias sem mudança também são dias de construção.",
 ];
+
+const getProgressMessage = (weightLost: number, streak: number): string => {
+  if (weightLost > 5) {
+    return "Você já percorreu um longo caminho. Seus resultados falam por si.";
+  }
+  if (weightLost > 0) {
+    return "Cada grama conta. Você está no caminho certo.";
+  }
+  if (streak > 7) {
+    return "Mesmo sem mudança no peso, sua consistência está construindo algo maior.";
+  }
+  return "O começo é o passo mais difícil. Você já deu.";
+};
 
 export const ProgressoTab = ({ data, weightLost }: ProgressoTabProps) => {
   const chartData = data.weightHistory
@@ -23,7 +37,8 @@ export const ProgressoTab = ({ data, weightLost }: ProgressoTabProps) => {
       peso: entry.weight,
     }));
 
-  const randomMessage = encouragingMessages[Math.floor(Math.random() * encouragingMessages.length)];
+  const randomMessage = encouragingMessages[new Date().getDay() % encouragingMessages.length];
+  const progressMessage = getProgressMessage(weightLost, data.streak);
 
   const daysOnJourney = Math.ceil(
     (new Date().getTime() - new Date(data.startDate).getTime()) / (1000 * 60 * 60 * 24)
@@ -32,8 +47,8 @@ export const ProgressoTab = ({ data, weightLost }: ProgressoTabProps) => {
   return (
     <div className="space-y-4 animate-fade-in">
       <div className="text-center pt-2">
-        <h1 className="text-2xl font-bold text-foreground">Seu Progresso</h1>
-        <p className="text-muted-foreground mt-1">Visualize sua jornada</p>
+        <h1 className="text-2xl font-bold text-foreground">Sua Jornada</h1>
+        <p className="text-muted-foreground mt-1">{progressMessage}</p>
       </div>
 
       {/* Stats Cards */}
