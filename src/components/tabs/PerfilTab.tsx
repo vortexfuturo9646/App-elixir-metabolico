@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { User, Settings, RotateCcw, Heart, Calendar, Beaker } from 'lucide-react';
+import { User, Settings, RotateCcw, Heart, Calendar, Beaker, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UserData } from '@/types/app';
@@ -34,6 +36,8 @@ const protocolMessages = [
 export const PerfilTab = ({ data, updateName, resetProgress, daysOnJourney }: PerfilTabProps) => {
   const [editingName, setEditingName] = useState(false);
   const [tempName, setTempName] = useState(data.name);
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
 
   const currentPhase = getCurrentPhase(daysOnJourney);
   const encouragement = protocolMessages[new Date().getDay() % protocolMessages.length];
@@ -151,6 +155,19 @@ export const PerfilTab = ({ data, updateName, resetProgress, daysOnJourney }: Pe
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Logout */}
+      <Button
+        variant="ghost"
+        onClick={async () => {
+          await signOut();
+          navigate('/', { replace: true });
+        }}
+        className="w-full text-muted-foreground hover:text-foreground"
+      >
+        <LogOut className="w-4 h-4 mr-2" />
+        Sair da conta
+      </Button>
     </div>
   );
 };

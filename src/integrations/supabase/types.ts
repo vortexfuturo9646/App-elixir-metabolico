@@ -14,7 +14,105 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          current_weight: number | null
+          id: string
+          initial_weight: number | null
+          language: string
+          last_check_in: string | null
+          name: string
+          ritual_completed: boolean
+          ritual_completed_date: string | null
+          start_date: string
+          streak: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_weight?: number | null
+          id?: string
+          initial_weight?: number | null
+          language?: string
+          last_check_in?: string | null
+          name?: string
+          ritual_completed?: boolean
+          ritual_completed_date?: string | null
+          start_date?: string
+          streak?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_weight?: number | null
+          id?: string
+          initial_weight?: number | null
+          language?: string
+          last_check_in?: string | null
+          name?: string
+          ritual_completed?: boolean
+          ritual_completed_date?: string | null
+          start_date?: string
+          streak?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      protocol_checks: {
+        Row: {
+          check_id: string
+          completed: boolean
+          created_at: string
+          date: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          check_id: string
+          completed?: boolean
+          created_at?: string
+          date?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          check_id?: string
+          completed?: boolean
+          created_at?: string
+          date?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      weight_history: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          user_id: string
+          weight: number
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          user_id?: string
+          weight?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
