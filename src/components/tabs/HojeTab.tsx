@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Flame, Scale, TrendingDown, CheckCircle2, Sparkles, Clock, Trophy, Beaker, Shield } from 'lucide-react';
+import { Flame, Scale, TrendingDown, CheckCircle2, Sparkles, Clock, Trophy, Beaker } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { UserData, ProtocolCheck } from '@/types/app';
-import { getCurrentPhase, getRitualMessage, getProtocolStatusMessage } from '@/lib/protocol';
+import { UserData } from '@/types/app';
+import { getCurrentPhase, getRitualMessage, getProtocolStatusMessage, getConfirmationMessage } from '@/lib/protocol';
+import { ProtocolChecklist } from '@/components/ProtocolChecklist';
 
 interface HojeTabProps {
   data: UserData;
@@ -37,14 +37,6 @@ const getStreakWarning = (lastCheckIn: string | null, streak: number): { show: b
   return { show: false, message: '' };
 };
 
-const protocolIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-  water: Scale,
-  method: Beaker,
-  sleep: Clock,
-  walk: TrendingDown,
-  avoid: Shield,
-};
-
 export const HojeTab = ({ data, updateWeight, confirmDay, isCheckedInToday, weightLost, daysOnJourney, toggleProtocolCheck }: HojeTabProps) => {
   const [editingInitial, setEditingInitial] = useState(false);
   const [editingCurrent, setEditingCurrent] = useState(false);
@@ -57,9 +49,6 @@ export const HojeTab = ({ data, updateWeight, confirmDay, isCheckedInToday, weig
   const streakWarning = getStreakWarning(data.lastCheckIn, data.streak);
   const greeting = getTimeBasedGreeting();
   const statusMessage = getProtocolStatusMessage(data.streak, isCheckedInToday);
-
-  const completedChecks = data.protocolChecks.filter(c => c.completed).length;
-  const totalChecks = data.protocolChecks.length;
 
   const handleSaveInitial = () => {
     const value = parseFloat(tempInitial);
@@ -123,8 +112,8 @@ export const HojeTab = ({ data, updateWeight, confirmDay, isCheckedInToday, weig
             <div className="w-24 h-24 rounded-full gradient-success flex items-center justify-center mx-auto mb-4 animate-bounce-soft">
               <Trophy className="w-12 h-12 text-success-foreground" />
             </div>
-            <p className="text-2xl font-bold text-foreground">Ritual concluído!</p>
-            <p className="text-muted-foreground">Você manteve o protocolo ativo</p>
+            <p className="text-2xl font-bold text-foreground">Protocolo executado!</p>
+            <p className="text-muted-foreground">Sinais corretos enviados ao corpo hoje</p>
           </div>
         </div>
       )}
@@ -178,49 +167,13 @@ export const HojeTab = ({ data, updateWeight, confirmDay, isCheckedInToday, weig
 
         {isCheckedInToday && (
           <p className="text-center text-sm text-success mt-3 animate-fade-in">
-            Protocolo executado. Você manteve o compromisso com seu processo.
+            {getConfirmationMessage()}
           </p>
         )}
       </div>
 
-      {/* Protocol Checklist - compact */}
-      <div className="card-elevated p-5">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2 text-primary">
-            <Shield className="w-5 h-5" />
-            <h2 className="font-bold text-sm uppercase tracking-wide">Protocolo Diário</h2>
-          </div>
-          <span className="text-xs font-semibold text-muted-foreground">{completedChecks}/{totalChecks}</span>
-        </div>
-
-        <div className="space-y-2">
-          {data.protocolChecks.map((check) => {
-            const Icon = protocolIcons[check.id] || Shield;
-            return (
-              <button
-                key={check.id}
-                onClick={() => toggleProtocolCheck(check.id)}
-                className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all text-sm ${
-                  check.completed
-                    ? 'bg-success-soft border border-success/30'
-                    : 'bg-muted hover:bg-muted/80 border border-transparent'
-                }`}
-              >
-                <Checkbox checked={check.completed} className="pointer-events-none" />
-                <span className={`flex-1 text-left ${check.completed ? 'text-success line-through' : 'text-foreground'}`}>
-                  {check.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {completedChecks === totalChecks && totalChecks > 0 && (
-          <p className="text-center text-sm text-success mt-3 font-semibold animate-scale-in">
-            ✨ Protocolo completo! Você cuidou de cada detalhe hoje.
-          </p>
-        )}
-      </div>
+      {/* Protocol Checklist */}
+      <ProtocolChecklist checks={data.protocolChecks} toggleCheck={toggleProtocolCheck} />
 
       {/* Weight Progress - compact */}
       <div className="card-elevated p-5">
