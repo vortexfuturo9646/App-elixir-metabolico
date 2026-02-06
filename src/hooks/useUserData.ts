@@ -1,12 +1,23 @@
 import { useState, useEffect } from 'react';
-import { UserData, defaultRoutineItems } from '@/types/app';
+import { UserData, defaultProtocolItems } from '@/types/app';
 
-const STORAGE_KEY = 'habit-tracker-data';
+const STORAGE_KEY = 'elixir-metabolico-data';
 
 const getInitialData = (): UserData => {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored) {
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored);
+    // Migration: convert old routineChecks to protocolChecks
+    if (parsed.routineChecks && !parsed.protocolChecks) {
+      parsed.protocolChecks = defaultProtocolItems.map(item => ({ ...item, completed: false }));
+      delete parsed.routineChecks;
+    }
+    if (!parsed.ritualCompleted) parsed.ritualCompleted = false;
+    if (!parsed.ritualCompletedDate) parsed.ritualCompletedDate = null;
+    if (!parsed.protocolChecks) {
+      parsed.protocolChecks = defaultProtocolItems.map(item => ({ ...item, completed: false }));
+    }
+    return parsed;
   }
   return {
     initialWeight: null,
@@ -14,9 +25,11 @@ const getInitialData = (): UserData => {
     streak: 0,
     lastCheckIn: null,
     weightHistory: [],
-    routineChecks: defaultRoutineItems.map(item => ({ ...item, completed: false })),
+    protocolChecks: defaultProtocolItems.map(item => ({ ...item, completed: false })),
     name: '',
     startDate: new Date().toISOString().split('T')[0],
+    ritualCompleted: false,
+    ritualCompletedDate: null,
   };
 };
 
@@ -68,15 +81,17 @@ export const useUserData = () => {
         ...prev,
         streak: isConsecutive ? prev.streak + 1 : 1,
         lastCheckIn: today,
-        routineChecks: defaultRoutineItems.map(item => ({ ...item, completed: false })),
+        ritualCompleted: true,
+        ritualCompletedDate: today,
+        protocolChecks: defaultProtocolItems.map(item => ({ ...item, completed: false })),
       };
     });
   };
 
-  const toggleRoutineCheck = (id: string) => {
+  const toggleProtocolCheck = (id: string) => {
     setData(prev => ({
       ...prev,
-      routineChecks: prev.routineChecks.map(check =>
+      protocolChecks: prev.protocolChecks.map(check =>
         check.id === id ? { ...check, completed: !check.completed } : check
       ),
     }));
@@ -93,26 +108,33 @@ export const useUserData = () => {
       streak: 0,
       lastCheckIn: null,
       weightHistory: [],
-      routineChecks: defaultRoutineItems.map(item => ({ ...item, completed: false })),
+      protocolChecks: defaultProtocolItems.map(item => ({ ...item, completed: false })),
       name: data.name,
       startDate: new Date().toISOString().split('T')[0],
+      ritualCompleted: false,
+      ritualCompletedDate: null,
     };
     setData(fresh);
   };
 
-  const isCheckedInToday = data.lastCheckIn === new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0];
+  const isCheckedInToday = data.lastCheckIn === today;
   const weightLost = data.initialWeight && data.currentWeight 
     ? Math.max(0, data.initialWeight - data.currentWeight) 
     : 0;
+  const daysOnJourney = Math.max(1, Math.ceil(
+    (new Date().getTime() - new Date(data.startDate).getTime()) / (1000 * 60 * 60 * 24)
+  ));
 
   return {
     data,
     updateWeight,
     confirmDay,
-    toggleRoutineCheck,
+    toggleProtocolCheck,
     updateName,
     resetProgress,
     isCheckedInToday,
     weightLost,
+    daysOnJourney,
   };
 };

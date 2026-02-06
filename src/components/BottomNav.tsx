@@ -1,6 +1,6 @@
-import { CalendarCheck, BookOpen, TrendingUp, ListChecks, User } from 'lucide-react';
+import { CalendarCheck, Beaker, TrendingUp, Clock, User } from 'lucide-react';
 
-type Tab = 'hoje' | 'metodo' | 'progresso' | 'rotina' | 'perfil';
+type Tab = 'hoje' | 'protocolo' | 'evolucao' | 'historico' | 'perfil';
 
 interface BottomNavProps {
   activeTab: Tab;
@@ -9,9 +9,9 @@ interface BottomNavProps {
 
 const tabs: { id: Tab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: 'hoje', label: 'Hoje', icon: CalendarCheck },
-  { id: 'metodo', label: 'Método', icon: BookOpen },
-  { id: 'progresso', label: 'Progresso', icon: TrendingUp },
-  { id: 'rotina', label: 'Rotina', icon: ListChecks },
+  { id: 'protocolo', label: 'Protocolo', icon: Beaker },
+  { id: 'evolucao', label: 'Evolução', icon: TrendingUp },
+  { id: 'historico', label: 'Histórico', icon: Clock },
   { id: 'perfil', label: 'Perfil', icon: User },
 ];
 
@@ -39,7 +39,6 @@ export const BottomNav = ({ activeTab, onTabChange }: BottomNavProps) => {
           );
         })}
       </div>
-      {/* Safe area padding for mobile */}
       <div className="h-safe-area-inset-bottom bg-card" />
     </nav>
   );
