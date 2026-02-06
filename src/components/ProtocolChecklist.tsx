@@ -94,10 +94,13 @@ export const ProtocolChecklist = ({ checks, toggleCheck }: ProtocolChecklistProp
                     e.stopPropagation();
                     handleToggleExpand(check.id);
                   }}
-                  className="p-1 rounded-lg hover:bg-background/50 transition-colors"
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors text-primary"
                   aria-label="Ver detalhes"
                 >
-                  <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                  <span className="text-[10px] font-semibold uppercase tracking-wide leading-none">
+                    {isExpanded ? 'Fechar' : 'Ver mais'}
+                  </span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
                 </button>
               </button>
 
