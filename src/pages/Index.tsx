@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { BottomNav } from '@/components/BottomNav';
 import { HojeTab } from '@/components/tabs/HojeTab';
-import { MetodoTab } from '@/components/tabs/MetodoTab';
-import { ProgressoTab } from '@/components/tabs/ProgressoTab';
-import { RotinaTab } from '@/components/tabs/RotinaTab';
+import { ProtocoloTab } from '@/components/tabs/ProtocoloTab';
+import { EvolucaoTab } from '@/components/tabs/EvolucaoTab';
+import { HistoricoTab } from '@/components/tabs/HistoricoTab';
 import { PerfilTab } from '@/components/tabs/PerfilTab';
 import { useUserData } from '@/hooks/useUserData';
 
-type Tab = 'hoje' | 'metodo' | 'progresso' | 'rotina' | 'perfil';
+type Tab = 'hoje' | 'protocolo' | 'evolucao' | 'historico' | 'perfil';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<Tab>('hoje');
@@ -15,11 +15,12 @@ const Index = () => {
     data, 
     updateWeight, 
     confirmDay, 
-    toggleRoutineCheck, 
+    toggleProtocolCheck, 
     updateName, 
     resetProgress,
     isCheckedInToday,
     weightLost,
+    daysOnJourney,
   } = useUserData();
 
   const renderTab = () => {
@@ -32,25 +33,23 @@ const Index = () => {
             confirmDay={confirmDay}
             isCheckedInToday={isCheckedInToday}
             weightLost={weightLost}
+            daysOnJourney={daysOnJourney}
+            toggleProtocolCheck={toggleProtocolCheck}
           />
         );
-      case 'metodo':
-        return <MetodoTab />;
-      case 'progresso':
-        return <ProgressoTab data={data} weightLost={weightLost} />;
-      case 'rotina':
-        return (
-          <RotinaTab 
-            routineChecks={data.routineChecks}
-            toggleRoutineCheck={toggleRoutineCheck}
-          />
-        );
+      case 'protocolo':
+        return <ProtocoloTab daysOnJourney={daysOnJourney} />;
+      case 'evolucao':
+        return <EvolucaoTab data={data} weightLost={weightLost} daysOnJourney={daysOnJourney} />;
+      case 'historico':
+        return <HistoricoTab data={data} daysOnJourney={daysOnJourney} weightLost={weightLost} />;
       case 'perfil':
         return (
           <PerfilTab 
             data={data}
             updateName={updateName}
             resetProgress={resetProgress}
+            daysOnJourney={daysOnJourney}
           />
         );
       default:
