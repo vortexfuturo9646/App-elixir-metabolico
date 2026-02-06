@@ -69,14 +69,8 @@ const Auth = () => {
       setLoading(false);
       if (error) {
         setErrors({ general: error });
-      } else {
-        toast({
-          title: 'Acesso criado!',
-          description: 'Verifique seu e-mail para confirmar sua conta.',
-        });
-        setMode('login');
-        setPassword('');
       }
+      // Auto-confirmed, navigation handled by auth state change
       return;
     }
 

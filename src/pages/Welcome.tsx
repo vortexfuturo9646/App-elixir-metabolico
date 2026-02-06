@@ -35,7 +35,7 @@ const Welcome = () => {
         <div className="space-y-3 pt-4">
           <Button
             onClick={() => navigate('/entrar')}
-            className="w-full h-13 text-base font-semibold gradient-primary text-primary-foreground hover:opacity-90 transition-opacity"
+            className="w-full h-16 text-lg font-bold gradient-primary text-primary-foreground hover:opacity-90 transition-opacity rounded-2xl"
             size="lg"
           >
             Entrar / Criar acesso
