@@ -20,6 +20,9 @@ export interface ProtocolCheck {
   id: string;
   label: string;
   completed: boolean;
+  pillar: string;
+  description: string;
+  guidance: string;
 }
 
 export interface ProtocolPhase {
@@ -73,11 +76,41 @@ export const protocolPhases: ProtocolPhase[] = [
 ];
 
 export const defaultProtocolItems: Omit<ProtocolCheck, 'completed'>[] = [
-  { id: 'water', label: 'Hidratação do protocolo (2L)' },
-  { id: 'method', label: 'Método executado' },
-  { id: 'sleep', label: 'Descanso restaurador (7-8h)' },
-  { id: 'walk', label: 'Movimento ativo (20 min)' },
-  { id: 'avoid', label: 'Controle alimentar mantido' },
+  {
+    id: 'water',
+    label: 'Hidratação de ativação metabólica',
+    pillar: 'Hidratação',
+    description: 'A água é o primeiro sinal que o corpo recebe para ativar o metabolismo. Sem hidratação, o processo desacelera.',
+    guidance: 'Beba pelo menos 2 litros ao longo do dia. Comece com um copo ao acordar, antes de qualquer alimento.',
+  },
+  {
+    id: 'method',
+    label: 'Controle alimentar previsível',
+    pillar: 'Alimentação',
+    description: 'Seu corpo responde a sinais, não a esforço extremo. A previsibilidade alimentar ensina o metabolismo a funcionar com eficiência.',
+    guidance: 'Mantenha horários regulares para as refeições. Evite pular ou compensar. Consistência vale mais que perfeição.',
+  },
+  {
+    id: 'walk',
+    label: 'Movimento ativo leve',
+    pillar: 'Movimento',
+    description: 'O movimento leve mantém o metabolismo ativo sem gerar estresse. Não é sobre queimar calorias — é sobre enviar sinais ao corpo.',
+    guidance: 'Caminhe 20 minutos hoje. Pode ser uma volta no quarteirão, ida ao trabalho a pé, ou qualquer movimento contínuo.',
+  },
+  {
+    id: 'sleep',
+    label: 'Descanso restaurador',
+    pillar: 'Descanso',
+    description: 'O corpo processa e consolida os resultados durante o sono. Sem descanso, o protocolo perde potência.',
+    guidance: 'Durma entre 7 e 8 horas. Evite telas 30 minutos antes de dormir. O descanso é parte ativa do protocolo.',
+  },
+  {
+    id: 'avoid',
+    label: 'Ritual diário de confirmação',
+    pillar: 'Ritual',
+    description: 'A confirmação diária fecha o ciclo do protocolo. Ela transforma intenção em compromisso real.',
+    guidance: 'Ao final do dia, revise seus pilares e confirme o protocolo. Hoje você reforçou o processo.',
+  },
 ];
 
 export const metabolicTimeline = [

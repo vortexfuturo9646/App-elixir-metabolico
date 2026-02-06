@@ -17,6 +17,13 @@ const getInitialData = (): UserData => {
     if (!parsed.protocolChecks) {
       parsed.protocolChecks = defaultProtocolItems.map(item => ({ ...item, completed: false }));
     }
+    // Migration: enrich existing checks with new pillar/description/guidance fields
+    if (parsed.protocolChecks && parsed.protocolChecks.length > 0 && !parsed.protocolChecks[0].pillar) {
+      parsed.protocolChecks = defaultProtocolItems.map(item => {
+        const existing = parsed.protocolChecks.find((c: any) => c.id === item.id);
+        return { ...item, completed: existing?.completed || false };
+      });
+    }
     return parsed;
   }
   return {

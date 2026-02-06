@@ -154,9 +154,20 @@ export const interpretWeightProgress = (
 };
 
 export const getProtocolStatusMessage = (streak: number, isCheckedIn: boolean): string => {
-  if (isCheckedIn) return 'Protocolo executado hoje ✓';
-  if (streak === 0) return 'Seu protocolo aguarda ativação';
-  return `Protocolo ativo — ${streak} ${streak === 1 ? 'dia' : 'dias'} consecutivos`;
+  if (isCheckedIn) return 'Protocolo executado. Hoje você reforçou o processo. ✓';
+  if (streak === 0) return 'Seu protocolo aguarda ativação. Comece enviando os sinais certos ao seu corpo.';
+  return `Protocolo ativo — ${streak} ${streak === 1 ? 'dia' : 'dias'} consecutivos. Cada dia reforça o padrão.`;
+};
+
+export const getConfirmationMessage = (): string => {
+  const messages = [
+    'Protocolo executado. Hoje você reforçou o processo.',
+    'Sinais corretos enviados ao corpo hoje.',
+    'Mais um dia de protocolo ativo. Seu corpo reconhece o padrão.',
+    'Compromisso mantido. Você está construindo um novo ritmo.',
+    'Dia concluído. Consistência é o que transforma.',
+  ];
+  return messages[Math.floor(Math.random() * messages.length)];
 };
 
 export const getRitualMessage = (streak: number): string => {
